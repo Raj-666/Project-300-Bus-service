@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h2 {
+            margin-bottom: 20px;
+        }
+        textarea, input, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        <!-- Upload Notice Section -->
+        <div class="section">
+            <h2>Upload Notice</h2>
+            <form id="noticeForm">
+                <input type="text" id="noticeTitle" placeholder="Title" required>
+                <textarea id="noticeContent" rows="4" placeholder="Content" required></textarea>
+                <button type="submit">Upload Notice</button>
+            </form>
+        </div>
+
+        <!-- View Complaints Section -->
+        <div class="section">
+            <h2>View Complaints</h2>
+            <table id="complaintsTable">
+                <thead>
+                    <tr>
+                        <th>Complaint ID</th>
+                        <th>User</th>
+                        <th>Complaint</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Complaints will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- View Lost and Found Messages Section -->
+        <div class="section">
+            <h2>View Lost and Found Messages</h2>
+            <table id="lostFoundTable">
+                <thead>
+                    <tr>
+                        <th>Message ID</th>
+                        <th>User</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Lost and found messages will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('noticeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Collect form data
+            const title = document.getElementById('noticeTitle').value;
+            const content = document.getElementById('noticeContent').value;
+            
+            // Send data to the server
+            fetch('/api/upload-notice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, content })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Notice uploaded successfully');
+                    document.getElementById('noticeForm').reset();
+                } else {
+                    alert('Error uploading notice');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Function to fetch complaints and populate the table
+        function fetchComplaints() {
+            fetch('/api/get-complaints')
+                .then(response => response.json())
+                .then(data => {
+                    const complaintsTable = document.getElementById('complaintsTable').getElementsByTagName('tbody')[0];
+                    complaintsTable.innerHTML = ''; // Clear existing data
+                    data.complaints.forEach(complaint => {
+                        const row = complaintsTable.insertRow();
+                        row.insertCell(0).innerText = complaint.id;
+                        row.insertCell(1).innerText = complaint.user;
+                        row.insertCell(2).innerText = complaint.complaint;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Function to fetch lost and found messages and populate the table
+        function fetchLostFoundMessages() {
+            fetch('/api/get-lost-found')
+                .then(response => response.json())
+                .then(data => {
+                    const lostFoundTable = document.getElementById('lostFoundTable').getElementsByTagName('tbody')[0];
+                    lostFoundTable.innerHTML = ''; // Clear existing data
+                    data.messages.forEach(message => {
+                        const row = lostFoundTable.insertRow();
+                        row.insertCell(0).innerText = message.id;
+                        row.insertCell(1).innerText = message.user;
+                        row.insertCell(2).innerText = message.message;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Fetch data on page load
+        window.onload = function() {
+            fetchComplaints();
+            fetchLostFoundMessages();
+        };
+    </script>
+</body>
+</html>

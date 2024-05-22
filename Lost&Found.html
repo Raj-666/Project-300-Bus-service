@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Lost and Found</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .lost-found-wrapper {
+            width: 100%;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+        }
+        .item h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .item p {
+            font-size: 1em;
+            color: #666;
+            line-height: 1.5;
+        }
+        .post-section {
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .post-section h3 {
+            margin: 0 0 10px 0;
+        }
+        .post-section textarea {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        .post-section button {
+            background-color: #0E9E4D;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .post-section button:hover {
+            background-color: #0c7a3a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lost-found-wrapper" id="lost-found-wrapper">
+            <h1>Metropolitan University Lost and Found</h1>
+        </div>
+        <!-- Post Item Section -->
+        <div class="post-section">
+            <h3>Post a Lost or Found Item</h3>
+            <textarea id="user-message" placeholder="Describe the lost/found item with contact details"></textarea>
+            <button onclick="postItem()">Post Item</button>
+        </div>
+    </div>
+
+    <script>
+        function postItem() {
+            const message = document.getElementById('user-message').value;
+            if (message.trim() === '') {
+                alert('Please enter a description.');
+                return;
+            }
+
+            const wrapper = document.getElementById('lost-found-wrapper');
+            const newItem = document.createElement('div');
+            newItem.classList.add('item');
+
+            const currentDate = new Date().toLocaleDateString();
+            newItem.innerHTML = `
+                <h2>Lost/Found Item - ${currentDate}</h2>
+                <p>${message}</p>
+            `;
+
+            wrapper.appendChild(newItem);
+            document.getElementById('user-message').value = '';
+        }
+    </script>
+</body>
+</html>
