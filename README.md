@@ -42,9 +42,9 @@ To set up the project locally:
 7. Access the project via localhost in your web browser.
 
 ####Contributors#####
-1. Raj Komol Deb - Frontend 
-2. Md. Naimul Hussain Chowdhury- Frontend and Backend
-3. Dipto Paul- Backend
+1. Raj Komol Deb(ID=221-115-040) - Frontend 
+2. Md. Naimul Hussain Chowdhury (ID=221-115-033)- Backend
+3. Dipto Paul (ID=221-115-027)- Database
 
 ####Acknowledgments####
 Special thanks to-
